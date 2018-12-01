@@ -397,3 +397,63 @@ h2.section-title + p {
 	font-size: 13px;
 	line-height: 1.8;
 }
+
+
+
+
+
+
+#preview-img {
+  border: 2px solid black;
+//	max-width: 100%;
+}
+
+#preview-container {
+  position: relative;
+}
+
+.face-box {
+	position: absolute;
+}
+
+.face-box.new {
+	border: 2px solid #ff4111;
+}
+
+.face-box.selected {
+	border: 2px solid #ffe100;
+}
+
+.face-box.added {
+	border: 2px solid #13ff0f;
+}
+
+.face-box.new:hover {
+	cursor: pointer;
+	background-color: white;
+	opacity: 0.3;
+}
+
+.face-box.added:hover {
+	cursor: pointer;
+}
+
+.face-box.added:hover:before {
+	opacity: 1;
+}
+
+.face-box.added:before {
+	content: attr(face-box-name);
+	top: -15px;
+  left: -10px;
+  color: black;
+  border-radius: 4px;
+  background-color: white;
+  position: relative;
+  padding: 1px 3px;
+	opacity: 0.7;
+	transform: rotate(-10deg);
+	display: inline-block;
+	transition: 0.4s;
+	font-family: Arial;
+}

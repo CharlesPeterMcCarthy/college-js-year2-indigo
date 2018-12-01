@@ -1,0 +1,34 @@
+#spotify-search, #spotify-btn {
+  width: 60%;
+  margin:auto;
+  margin-bottom: 20px;
+}
+
+.spotify-artist {
+  list-style: none;
+  padding: 10px;
+  margin-bottom: 4px;
+  background-color: #191414;
+  color: #1db954;
+}
+
+.artist-img {
+  width: 180px;
+  height: 180px;
+  border-radius: 8px;
+}
+
+.artist-name {
+  font-weight: bold;
+  font-size: 20px;
+  display: inline-block;
+  margin-bottom: 20px;
+  color: inherit;
+  border-bottom: 1px solid #1db954;
+  width: 100%;
+  padding-bottom: 10px;
+}
+
+.artist-name:hover {
+  color: inherit;
+}

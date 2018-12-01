@@ -13,14 +13,13 @@
   		<!-- Font Awesome -->
   		<link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
   		<!-- Style -->
-  		<link href='style.css' rel='stylesheet' type='text/css'>
+  		<link href='styles/main.css' rel='stylesheet' type='text/css'>
+      <link href='styles/index.css' rel='stylesheet' type='text/css'>
 
-  		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  		<!--[if lt IE 9]>
-  			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
-  			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-  		<![endif]-->
+      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" />
+      <link rel="stylesheet" type="text/css" href="plugins/contextmenu/dist/jquery.contextMenu.min.css" />
+      <link rel="stylesheet" type="text/css" href="plugins/jquery-loading/dist/jquery.loading.min.css" />
+      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
   	</head>
   	<body>
   		<nav class="navbar navbar-default" role="navigation">
@@ -46,7 +45,7 @@
   							<a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Services <b class="caret"></b></a>
   							<ul class="dropdown-menu">
   								<li><a href="facial-recognition.html">Facial Detection</a></li>
-                  <li><a href="spotify.html">Spotify Lookup Service</a></li>
+                  <li><a href="javascript:void(0)">Spotify Lookup Service</a></li>
   								<li><a href="javascript:void(0)">AI Services</a></li>
   								<li><a href="javascript:void(0)">Mobile App Development</a></li>
   							</ul>
@@ -67,7 +66,7 @@
   						<p class="lead">The integration of information, design, and technology.</p>
   						<ul class="list-inline">
   							<li><a href="javascript:void(0)" title="Learn More" class="btn btn-md btn-info">Learn More</a></li>
-  							<li><a href="facial-recognition.html" title="Download Now" class="btn btn-md btn-primary">View Demo</a></li>
+  							<li><a href="facial-recognition.html" title="View Demo" class="btn btn-md btn-primary">View Demo</a></li>
   						</ul>
   					</div>
   				</div>
@@ -96,10 +95,9 @@
                 <i class="fa fa-rocket"></i>
                 <h3>Spotify Lookup Service</h3>
                 <p>Interact with our Spotify Lookup app.</p>
-                <a href="spotify.html" title="Learn More" class="btn btn-sm btn-primary">Learn More</a>
+                <a href="javascript:void(0)" title="Learn More" class="btn btn-sm btn-primary">Learn More</a>
               </div><!--/.service-block-->
             </div>
-
   					<div class="col-md-4">
   						<div class="service-block text-center">
   							<i class="fa fa-rocket"></i>
@@ -120,6 +118,39 @@
   				<div class="row">
   					<div class="col-md-12">
   						<h3 class="text-uppercase letter-spacing-md font-weight-lg margin-zero">Sometimes the best way to envision the future is to invent it.</h3>
+  					</div>
+  				</div>
+  			</div>
+  		</div>
+  		<!--/.section -->
+
+      <!-- START SECTION -->
+  		<div class="section background-light">
+  			<div class="container">
+  				<div class="row">
+  					<div class="col-md-12 text-center">
+  						<h2 class="section-title">Spotify Lookup API</h2>
+  						<p class="section-description">Try out our Spotify Lookup API. Search for your favourite band below.</p>
+  					</div>
+  					<div class="col-md-12 text-center">
+              <input type="text" class="form-control" id="spotify-search" placeholder="Enter band name here">
+              <button class="btn btn-md btn-block" id="spotify-btn">Search</button>
+  					</div>
+            <div class="col-md-12">
+              <ul id="spotify-results"></ul>
+  					</div>
+  				</div>
+  			</div>
+  		</div>
+  		<!--/.section -->
+
+      <!-- START SECTION -->
+  		<div class="section hero text-center background-grey dark-bg">
+  			<div class="background-image" style="background: url(images/hero.jpg) no-repeat fixed center center; background-size: cover; opacity: .2;"></div>
+  			<div class="container">
+  				<div class="row">
+  					<div class="col-md-12">
+  						<h3 class="text-uppercase letter-spacing-md font-weight-lg margin-zero">Powered by Intellect - Driven by Values.</h3>
   					</div>
   				</div>
   			</div>
@@ -242,8 +273,8 @@
   				<div class="row">
   					<div class="col-md-3">
   						<h3 class="text-uppercase font-size-md letter-spacing-md font-weight-lg ">About Us</h3>
-  						<p>Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing, commodo quis, gravida id, est.</p>
-  						<p>Sed tempus feugiat adipiscing nisl cursus aliquam dolore.</p>
+  						<p>We are a software company based in the North West of Ireland. We specialise in AI, Image processing and APIs.</p>
+  						<p>Setting the Standard in Software Development.</p>
   					</div>
   					<div class="col-md-4 col-md-offset-1">
   						<h3 class="text-uppercase font-size-md letter-spacing-md font-weight-lg ">Ireland Office</h3>
@@ -284,6 +315,16 @@
 
   		<!-- jQuery -->
   		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+      <script src="plugins/facedetection/jquery.facedetection.min.js"></script>
+
+      <script src="scripts/index.js"></script>
+
+      <script src="plugins/contextmenu/dist/jquery.contextMenu.js"></script>
+
+      <script src="plugins/jquery-loading/dist/jquery.loading.js"></script>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
   		<!-- Bootstrap JavaScript -->
   		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
   	</body>
