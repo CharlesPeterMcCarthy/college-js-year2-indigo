@@ -21,12 +21,14 @@ $(document).ready(function() {
   function GetSpotifyAccessToken(callback) {
     $.ajax({
       type: "POST",
-      url: "https://yourtakeout.ie/spotify-api/get-access-token.php",
+      url: "https://indigoassignment.appspot.com/get-token",
       data: JSON.stringify({
         clientID: "88914c854e7f4c2687f971155584dabf"
       }),
       dataType: 'json',
       success: function(response) {
+        console.log(response)
+
         if (response.token) callback(response.token)
         else if (response.error) toastr["error"](response.error, "An Error Occurred")
         else toastr["error"]("An unknown error has occurred", "Unknown Error")
@@ -44,7 +46,10 @@ $(document).ready(function() {
 
   function SearchSpotify(btn, type) {
     let searchText = $("#spotify-search").val()
-    if (!searchText) return toastr["warning"]("You have not entered anything into the search input field", "No Search Term")
+    if (!searchText) {
+      btn.prop('disabled', false)
+      return toastr["warning"]("You have not entered anything into the search input field", "No Search Term")
+    }
 
     $("#spotify-results").empty()
     $("#spotify-loader").show()
