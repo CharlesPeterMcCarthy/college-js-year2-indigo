@@ -130,13 +130,31 @@
   				<div class="row">
   					<div class="col-md-12 text-center">
   						<h2 class="section-title">Spotify Lookup API</h2>
-  						<p class="section-description">Try out our Spotify Lookup API. Search for your favourite band below.</p>
+  						<p class="section-description">Try out our Spotify Lookup API. Search for your favourite artist or album below.</p>
   					</div>
-  					<div class="col-md-12 text-center">
-              <input type="text" class="form-control" id="spotify-search" placeholder="Enter band name here">
-              <button class="btn btn-md btn-block" id="spotify-btn">Search</button>
+  					<div class="col-md-12">
+              <div class="row">
+                <div id="spotify-search-options">
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="spotify-search" placeholder="Enter artist or album name">
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <select class="form-control" id="spotify-search-type">
+                        <option value="artist">Artist</option>
+                        <option value="album">Album</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-sm-12">
+                    <button class="btn btn-md btn-block" id="spotify-btn">Search</button>
+                  </div>
+                </div>
+              </div>
   					</div>
             <div class="col-md-12">
+              <p class="text-center" id="spotify-search-count"></p>
+              <div class="loader" id="spotify-loader" hidden></div>
               <ul id="spotify-results"></ul>
   					</div>
   				</div>

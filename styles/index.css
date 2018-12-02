@@ -1,10 +1,15 @@
-#spotify-search, #spotify-btn {
+#spotify-search-options {
   width: 60%;
   margin:auto;
   margin-bottom: 20px;
 }
 
-.spotify-artist {
+#spotify-search-count {
+  font-size: 12px;
+  margin-top: 40px;
+}
+
+.spotify-item {
   list-style: none;
   padding: 10px;
   margin-bottom: 4px;
@@ -12,13 +17,13 @@
   color: #1db954;
 }
 
-.artist-img {
+.artist-img, .album-img {
   width: 180px;
   height: 180px;
   border-radius: 8px;
 }
 
-.artist-name {
+.artist-name, .album-name {
   font-weight: bold;
   font-size: 20px;
   display: inline-block;
@@ -29,6 +34,30 @@
   padding-bottom: 10px;
 }
 
-.artist-name:hover {
+.artist-name:hover, .album-name:hover {
   color: inherit;
+}
+
+.loader {
+  border: 16px solid #191414;
+  border-radius: 50%;
+  border-top: 16px solid #1db954;
+  width: 80px;
+  height: 80px;
+  animation: spin 1.5s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.btn-spotify {
+  color: #191414;
+  background-color: #1db954;
+}
+
+.btn-spotify:hover {
+  background-color: #01aa3d;
 }

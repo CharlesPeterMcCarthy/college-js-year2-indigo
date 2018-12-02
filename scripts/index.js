@@ -39,17 +39,20 @@ $(document).ready(function() {
 
   $("#spotify-btn").click(function() {
     $(this).prop('disabled', true)
-    GetArtists($(this))
-  });
+    SearchSpotify($(this), $('#spotify-search-type').val())
+  })
 
-  function GetArtists(btn) {
+  function SearchSpotify(btn, type) {
     let searchText = $("#spotify-search").val()
     if (!searchText) return toastr["warning"]("You have not entered anything into the search input field", "No Search Term")
+
+    $("#spotify-results").empty()
+    $("#spotify-loader").show()
 
     GetSpotifyAccessToken(function(accessToken) {
       $.ajax({
         type: 'GET',
-        url: `https://api.spotify.com/v1/search?q=${searchText}&type=artist&limit=10`,
+        url: `https://api.spotify.com/v1/search?q=${searchText}&type=${type}&limit=10`,
         headers: {
            'Authorization': 'Bearer ' + accessToken
         },
@@ -57,8 +60,19 @@ $(document).ready(function() {
         success: function(response){
           console.log(response)
 
-          if (response.artists) DisplaySpotifySearchResults(response.artists)
+          $("#spotify-loader").hide()
+
+          if (type === "artist" && response.artists) {
+            DisplaySpotifyArtists(response.artists.items)
+
+            if (response.artists.limit && response.artists.total) DisplaySearchResultsCount(response.artists.limit, response.artists.total, "artists")
+          } else if (type === "album" && response.albums) {
+            DisplaySpotifyAlbums(response.albums.items)
+
+            if (response.albums.limit && response.albums.total) DisplaySearchResultsCount(response.albums.limit, response.albums.total, "albums and singles")
+          }
           else if (response.error) toastr["error"](response.error, "An Error Occurred")
+
 
           btn.prop('disabled', false)
         },
@@ -69,21 +83,30 @@ $(document).ready(function() {
     })
   }
 
-  function DisplaySpotifySearchResults(artists) {
-    $.each(artists.items, (index, artist) => {
-      $(CreateSpotifyArtistItem(artist)).appendTo("#spotify-results").hide().slideDown()
+  function DisplaySpotifyArtists(artists) {
+    $.each(artists, (index, artist) => {
+      $(CreateSpotifyArtistItem(artist)).appendTo("#spotify-results")
     })
+    $("#spotify-results").slideDown()
+  }
+
+  function DisplaySpotifyAlbums(albums) {
+    $.each(albums, (index, album) => {
+      $(CreateSpotifyAlbumItem(album)).appendTo("#spotify-results")
+    })
+    $("#spotify-results").slideDown()
   }
 
   function CreateSpotifyArtistItem(artist) {
     return (
-      `<li class='spotify-artist'>
+      `<li class='spotify-item'>
         <div class='row'>
           <div class='col-sm-8'>
             <a class='artist-name' href='${artist.external_urls.spotify}' target='_blank'>${artist.name}</a>
             <p><strong>Followers</strong>: ${artist.followers.total}</p>
             <p><strong>Genres</strong>: ${artist.genres.length && artist.genres.join(", ") || "N/A"}</p>
             <p><strong>Popularity</strong>: ${artist.popularity} / 100</p>
+            <button class='btn btn-sm btn-spotify view-artist-albums' artist-id='${artist.id}'>View Albums</button>
           </div>
           <div class='col-sm-4 text-right'>
             <img src='${artist.images.length && artist.images[1].url || "images/noimage.gif"}' class='artist-img'>
@@ -91,6 +114,63 @@ $(document).ready(function() {
         </div>
       </li>`
     )
+  }
+
+  function CreateSpotifyAlbumItem(album) {
+    return (
+      `<li class='spotify-item'>
+        <div class='row'>
+          <div class='col-sm-8'>
+            <a class='album-name' href='${album.external_urls.spotify}' target='_blank'>${album.name}</a>
+            <p><strong>Artist</strong>: ${album.artists[0].name || "N/A"}</p>
+            <p><strong>Total Tracks</strong>: ${album.total_tracks}</p>
+            <p><strong>Released</strong>: ${album.release_date}</p>
+          </div>
+          <div class='col-sm-4 text-right'>
+            <img src='${album.images.length && album.images[1].url || "images/noimage.gif"}' class='album-img'>
+          </div>
+        </div>
+      </li>`
+    )
+  }
+
+  function DisplaySearchResultsCount(limit, total, type) {
+    $('#spotify-search-count').html(`Showing 1-${total > limit ? limit : total } of ${total} ${type}.`).hide().fadeIn()
+  }
+
+  $(document).on('click', '.view-artist-albums', function() {
+    GetArtistAlbums($(this).attr('artist-id'))
+  })
+
+  function GetArtistAlbums(artistID) {
+    $("#spotify-results").empty();
+    $("#spotify-loader").show();
+
+    GetSpotifyAccessToken(function(accessToken) {
+      $.ajax({
+        type: 'GET',
+        url: `https://api.spotify.com/v1/artists/${artistID}/albums?limit=10`,
+        headers: {
+           'Authorization': 'Bearer ' + accessToken
+        },
+        dataType : 'json',
+        success: function(response){
+          console.log(response)
+
+          $("#spotify-loader").hide()
+
+          if (response.items) {
+            DisplaySpotifyAlbums(response.items)
+
+            if (response.limit && response.total) DisplaySearchResultsCount(response.limit, response.total, 'albums & singles')
+          }
+          else if (response.error) toastr["error"](response.error, "An Error Occurred")
+        },
+        error : function(response) {
+          console.log(response)
+        }
+      })
+    })
   }
 
 })
