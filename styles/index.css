@@ -11,10 +11,11 @@
 
 .spotify-item {
   list-style: none;
-  padding: 10px;
-  margin-bottom: 4px;
+  padding: 25px;
+  margin-bottom: 10px;
   background-color: #191414;
   color: #1db954;
+  border-radius: 4px;
 }
 
 .artist-img, .album-img {
@@ -26,16 +27,11 @@
 .artist-name, .album-name {
   font-weight: bold;
   font-size: 20px;
-  display: inline-block;
   margin-bottom: 20px;
   color: inherit;
   border-bottom: 1px solid #1db954;
   width: 100%;
   padding-bottom: 10px;
-}
-
-.artist-name:hover, .album-name:hover {
-  color: inherit;
 }
 
 .loader {
@@ -59,5 +55,9 @@
 }
 
 .btn-spotify:hover {
-  background-color: #01aa3d;
+  background-color: #169342;
+}
+
+.spotify-item-btns {
+  margin-top: 30px;
 }

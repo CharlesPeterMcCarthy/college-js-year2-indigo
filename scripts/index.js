@@ -102,11 +102,14 @@ $(document).ready(function() {
       `<li class='spotify-item'>
         <div class='row'>
           <div class='col-sm-8'>
-            <a class='artist-name' href='${artist.external_urls.spotify}' target='_blank'>${artist.name}</a>
+            <p class='artist-name'>${artist.name}</p>
             <p><strong>Followers</strong>: ${artist.followers.total}</p>
             <p><strong>Genres</strong>: ${artist.genres.length && artist.genres.join(", ") || "N/A"}</p>
             <p><strong>Popularity</strong>: ${artist.popularity} / 100</p>
-            <button class='btn btn-sm btn-spotify view-artist-albums' artist-id='${artist.id}'>View Albums</button>
+            <div class='spotify-item-btns'>
+              <a class='btn btn-sm btn-spotify' href='${artist.external_urls.spotify}' target='_blank'>View On Spotify</a>
+              <button class='btn btn-sm btn-spotify view-artist-albums' artist-id='${artist.id}'>View Albums</button>
+            </div>
           </div>
           <div class='col-sm-4 text-right'>
             <img src='${artist.images.length && artist.images[1].url || "images/noimage.gif"}' class='artist-img'>
@@ -121,10 +124,13 @@ $(document).ready(function() {
       `<li class='spotify-item'>
         <div class='row'>
           <div class='col-sm-8'>
-            <a class='album-name' href='${album.external_urls.spotify}' target='_blank'>${album.name}</a>
+            <p class='album-name'>${album.name}</p>
             <p><strong>Artist</strong>: ${album.artists[0].name || "N/A"}</p>
             <p><strong>Total Tracks</strong>: ${album.total_tracks}</p>
-            <p><strong>Released</strong>: ${album.release_date}</p>
+            <p><strong>Released</strong>: ${GetTimeSince(album.release_date)}</p>
+            <div class='spotify-item-btns'>
+              <a class='btn btn-sm btn-spotify' href='${album.external_urls.spotify}' target='_blank'>View On Spotify</a>
+            </div>
           </div>
           <div class='col-sm-4 text-right'>
             <img src='${album.images.length && album.images[1].url || "images/noimage.gif"}' class='album-img'>
@@ -132,6 +138,10 @@ $(document).ready(function() {
         </div>
       </li>`
     )
+  }
+
+  function GetTimeSince(date) {
+    return moment(new Date(date)).fromNow()
   }
 
   function DisplaySearchResultsCount(limit, total, type) {
