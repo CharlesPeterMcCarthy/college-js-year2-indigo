@@ -1,63 +1,78 @@
 $(document).ready(function() {
 
-  $("#get-faces").click(function(event) {
-      $("#preview-img").faceDetection({
-        complete: function (faces) {
-          setTimeout(function() {
-            for (var i = 0; i < faces.length; i++) {
-              var face = faces[i];
+  toastr.options = {
+    "closeButton": false,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": false,
+    "positionClass": "toast-bottom-right",
+    "preventDuplicates": true,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+  }
 
-              var faceBox = $("<div class='face-box new'></div>");
-              faceBox.css({ top: face.y - 5, left: face.x - 5, width: face.width + 10, height: face.height + 10, 'border-radius': 8 })
+  $("#get-faces-btn").click(function(event) {
+    $("#preview-img").faceDetection({
+      complete: function (faces) {
+        setTimeout(function() {
+          for (var i = 0; i < faces.length; i++) {
+            var face = faces[i];
 
-              $("#preview-container").append(faceBox)
-            }
-            $("#preview-img").loading('stop');
-          }, 1000)
-          console.log(faces);
-        },error: function (code, message) {
-          console.log(message)
-        }
-      }).loading('start');
+            var faceBox = $("<div class='face-box new'></div>");
+            faceBox.css({ top: face.y - 5, left: face.x - 5, width: face.width + 10, height: face.height + 10, 'border-radius': 8 })
+
+            $("#preview-container").append(faceBox)
+          }
+
+          $("#preview-img").loading('stop')
+          $("#get-faces-btn").prop('disabled', true)
+        }, 1000)
+        console.log(faces);
+      },error: function (code, message) {
+        console.log(message)
+      }
+    }).loading('start')
   })
 
-  $("#upload-img").click(function() {
-    $("#preview-img").loading('start');
-    var preview = document.querySelector('#preview-img');
-    var file    = document.querySelector('input[type=file]').files[0];
-    var reader  = new FileReader();
-
-    reader.onloadend = function () {
-      setTimeout(function() {
-        preview.src = reader.result;
-        $("#preview-img").loading('stop').hide().fadeIn('slow')
-      }, 1000)
-    }
-
-    if (file) {
-       reader.readAsDataURL(file); //reads the data as a URL
-    } else {
-       preview.src = "";
-    }
-  })
-
-  var _URL = window.URL || window.webkitURL;
+  var _URL = window.URL || window.webkitURL
 
   $("#img-file").change(function() {
-    var file, img;
-    if ((file = this.files[0])) {
-      img = new Image();
-    }
-    if ((file = this.files[0])) {
-      img = new Image();
+    $(".face-box").remove() // Remove any faceboxes from previous image
+
+    var file, img
+
+    if ((file = $("#img-file").prop('files')[0])) {
+      img = new Image()
 
       img.onload = function() {
-        $('#preview-img').css({ width: this.width, height: this.height })
-      };
+        let imgPrev = $('#preview-img')
 
-      img.src = _URL.createObjectURL(file);
+        imgPrev.css({ width: this.width, height: this.height }).fadeIn().loading('start')
+
+        var file = $('#img-file').prop('files')[0]
+        var reader = new FileReader()
+
+        reader.onloadend = function () {
+          setTimeout(function() {
+            imgPrev.attr('src', reader.result).loading('stop').hide().fadeIn('slow')
+            $("#get-faces-btn").prop('disabled', false).fadeIn()
+          }, 1000)
+        }
+
+        if (file) reader.readAsDataURL(file)
+        else imgPrev.attr('src', "")
+      }
+
+      img.src = _URL.createObjectURL(file)
     }
-  });
+  })
 
   $(function() {
     $.contextMenu({
@@ -67,7 +82,10 @@ $(document).ready(function() {
         let faceBox = $(options.$trigger.context)
 
         if (key === "add") {
-          faceBox.attr('personName', prompt("Enter the person's name", ""))
+          let name = prompt("Enter the person's name", "")
+          if (!name) return toastr["error"]("You must enter the person's name.", "Name Missing")
+
+          faceBox.attr('personName', name)
           faceBox.addClass('added').removeClass('new selected').attr('face-box-name', faceBox.attr('personName'))
         }
         if (key === "delete") faceBox.remove()

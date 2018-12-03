@@ -1,9 +1,11 @@
 #preview-img {
-  border: 2px solid black;
+  border: 1px solid #AAA;
+  margin-bottom: 20px;
 }
 
 #preview-container {
   position: relative;
+  display: inline-block; /* Wrap div around image */
 }
 
 .face-box {

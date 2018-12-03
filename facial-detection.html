@@ -17,6 +17,7 @@
     <link href='styles/facial-detection.css' rel='stylesheet' type='text/css'>
 
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <link rel="stylesheet" type="text/css" href="plugins/contextmenu/dist/jquery.contextMenu.min.css" />
     <link rel="stylesheet" type="text/css" href="plugins/jquery-loading/dist/jquery.loading.min.css" />
   </head>
@@ -31,7 +32,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="javascript:void(0)">Indigo Software</a>
+          <a class="navbar-brand" href="index.html">Indigo Software</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -43,7 +44,7 @@
             <li class="dropdown">
               <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Services <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="facial-recognition.html">Facial Detection</a></li>
+                <li><a href="facial-detection.html">Facial Detection</a></li>
                 <li><a href="javascript:void(0)">AI Services</a></li>
                 <li><a href="javascript:void(0)">Mobile App Development</a></li>
                 <li><a href="javascript:void(0)">APIs</a></li>
@@ -70,11 +71,23 @@
     <!--/.section -->
 
     <div class="section">
-      <input type="file" id="img-file"><br>
-      <button type="button" id="upload-img">Upload</button>
-      <button type="button" id="get-faces">Get Faces</button>
-      <div id="preview-container">
-        <img src="" id="preview-img">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <h2 class="section-title">Facial Detection</h2>
+          <p class="section-description">Upload an image of one or more people.</p>
+        </div>
+        <div class="col-sm-12 text-center">
+          <div id="preview-container">
+            <img src="" id="preview-img" hidden>
+          </div>
+        </div>
+        <div class="col-sm-12 text-center">
+          <label class="btn btn-md btn-info">
+            <input type="file" id="img-file" class="btn btn-md" style="display:none;">
+            Choose Image
+          </label>
+          <button type="button" class="btn btn-md btn-success" id="get-faces-btn" style="display: none;">Get Faces</button>
+        </div>
       </div>
     </div>
 
@@ -140,13 +153,11 @@
 
     <!-- jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="plugins/facedetection/jquery.facedetection.min.js"></script>
-
-    <script src="scripts/facial-detection.js"></script>
-
     <script src="plugins/contextmenu/dist/jquery.contextMenu.js"></script>
-
     <script src="plugins/jquery-loading/dist/jquery.loading.js"></script>
+    <script src="scripts/facial-detection.js"></script>
     <!-- Bootstrap JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
   </body>
