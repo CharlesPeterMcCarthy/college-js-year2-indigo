@@ -60,10 +60,10 @@
   			<div class="container">
   				<div class="row">
   					<div class="col-md-12">
-  						<h2>Indigo Software</h2>
+  						<h2 class="main-title">Indigo Software</h2>
   						<p class="lead">The integration of information, design, and technology.</p>
   						<ul class="list-inline">
-  							<li><a href="javascript:void(0)" title="Learn More" class="btn btn-md btn-info">Learn More</a></li>
+  							<li><a href="javascript:void(0)" title="Learn More" class="btn btn-md btn-info" id="learn-more-btn">Learn More</a></li>
   							<li><a href="facial-detection.html" title="View Demo" class="btn btn-md btn-primary">View Demo</a></li>
   						</ul>
   					</div>
@@ -239,7 +239,7 @@
   		<!--/.section -->
 
   		<!-- START SECTION -->
-  		<div class="section">
+  		<div class="section" id="contact-section">
   			<div class="container">
   				<div class="row">
   					<div class="col-md-12 text-center">
@@ -249,18 +249,18 @@
   					<div class="col-md-8 col-md-offset-2">
   						<form id="contact" method="post" class="form" role="form">
 							<div class="row">
-								<div class="col-md-6 form-group">
+								<div class="col-md-6 form-group" id="contact-name-container">
 									<input class="form-control" id="name" name="name" placeholder="Name" type="text" required />
 								</div>
-								<div class="col-md-6 form-group">
+								<div class="col-md-6 form-group" id="contact-email-container">
 									<input class="form-control" id="email" name="email" placeholder="Email" type="email" required />
 								</div>
 							</div>
 							<textarea class="form-control" id="message" name="message" placeholder="Message" rows="5"></textarea>
 							<br />
 							<div class="row">
-								<div class="col-md-12 form-group">
-									<button class="btn btn-primary" type="submit">Submit</button>
+								<div class="col-md-12 form-group" id="submit-btn-container">
+									<button class="btn btn-primary" type="submit" id="submit-btn">Submit</button>
 								</div>
 							</div>
 						</form>

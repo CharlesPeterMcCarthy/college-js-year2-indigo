@@ -188,4 +188,50 @@ $(document).ready(function() {
     })
   }
 
+  /* ------------------- General Requirements --------------------- */
+
+  $(".main-title").mouseleave(function() { // Rotate main title of the page 360 degrees on every hover - Can give a spinning effect
+    $(this).data('rotated', parseInt($(this).data('rotated') || 0) + 360).css({
+      transform: `rotate(${parseInt($(this).data('rotated')) + 360}deg)`
+    })
+  })
+
+  $("#learn-more-btn").click(function() {
+    let btn = $(this)
+    btn.addClass('red-btn')
+
+    setTimeout(function() {
+      btn.removeClass('red-btn')
+    }, 1000)
+  })
+
+  $("#message").on('change keyup paste', function() {
+    let width = Math.ceil(Math.random() * (10 - 1) + 1)
+
+    $("#contact-name-container").attr('class', `col-md-${width} form-group`)
+    $("#contact-email-container").attr('class', `col-md-${12 - width} form-group`)
+  })
+
+  $("#name").focus(function() {
+    $("#submit-btn-container").addClass("text-right")
+  })
+
+  $("#email").dblclick(function() {
+    $("#submit-btn-container").removeClass("text-right")
+  })
+
+  $("#submit-btn").click(function() {
+    $("#message").slideUp(function() {
+      $("#email").slideUp(function() {
+        $("#name").slideUp(function() {
+          $("#contact-section").slideUp()
+        })
+      })
+    })
+  })
+
+  $(".nav li a[href='javascript:void(0)']").click(function() {
+    new Audio('sounds/ding.mp3').play()
+  })
+
 })

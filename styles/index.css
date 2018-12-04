@@ -61,3 +61,19 @@
 .spotify-item-btns {
   margin-top: 30px;
 }
+
+
+
+
+.main-title {
+  transition: 1s;
+}
+
+.red-btn {
+  background-color: red!important;
+  border-radius: 8px;
+}
+
+.form-group {
+  transition: 0.4s;
+}
