@@ -26,14 +26,14 @@ $(document).ready(function() {
         clientID: "88914c854e7f4c2687f971155584dabf"
       }),
       dataType: 'json',
-      success: function(response) {
+      success: (response) => {
         console.log(response)
 
         if (response.token) callback(response.token)
         else if (response.error) toastr["error"](response.error, "An Error Occurred")
         else toastr["error"]("An unknown error has occurred", "Unknown Error")
       },
-      error : function(response) {
+      error : (response) => {
         toastr["error"](response, "An Error Occurred")
       }
     });
@@ -54,7 +54,7 @@ $(document).ready(function() {
     $("#spotify-results").empty()
     $("#spotify-loader").show()
 
-    GetSpotifyAccessToken(function(accessToken) {
+    GetSpotifyAccessToken((accessToken) => {
       $.ajax({
         type: 'GET',
         url: `https://api.spotify.com/v1/search?q=${searchText}&type=${type}&limit=10`,
@@ -62,7 +62,7 @@ $(document).ready(function() {
            'Authorization': 'Bearer ' + accessToken
         },
         dataType : 'json',
-        success: function(response){
+        success: (response) => {
           console.log(response)
 
           $("#spotify-loader").hide()
@@ -70,18 +70,18 @@ $(document).ready(function() {
           if (type === "artist" && response.artists) {
             DisplaySpotifyArtists(response.artists.items)
 
-            if (response.artists.limit && response.artists.total) DisplaySearchResultsCount(response.artists.limit, response.artists.total, "artists")
+            if (response.artists.limit && response.artists.total !== undefined) DisplaySearchResultsCount(response.artists.limit, response.artists.total, "artists")
           } else if (type === "album" && response.albums) {
             DisplaySpotifyAlbums(response.albums.items)
 
-            if (response.albums.limit && response.albums.total) DisplaySearchResultsCount(response.albums.limit, response.albums.total, "albums and singles")
+            if (response.albums.limit && response.albums.total !== undefined) DisplaySearchResultsCount(response.albums.limit, response.albums.total, "albums and singles")
           }
           else if (response.error) toastr["error"](response.error, "An Error Occurred")
 
 
           btn.prop('disabled', false)
         },
-        error : function(response) {
+        error : (response) => {
           console.log(response)
         }
       })
@@ -150,7 +150,11 @@ $(document).ready(function() {
   }
 
   function DisplaySearchResultsCount(limit, total, type) {
-    $('#spotify-search-count').html(`Showing 1-${total > limit ? limit : total } of ${total} ${type}.`).hide().fadeIn()
+    $('#spotify-search-count').html(
+      total > 0 ?
+      `Showing 1-${total > limit ? limit : total } of ${total} ${type}.` :
+      `There are 0 matching ${type}.`
+    ).hide().fadeIn()
   }
 
   $(document).on('click', '.view-artist-albums', function() {
@@ -161,7 +165,7 @@ $(document).ready(function() {
     $("#spotify-results").empty();
     $("#spotify-loader").show();
 
-    GetSpotifyAccessToken(function(accessToken) {
+    GetSpotifyAccessToken((accessToken) => {
       $.ajax({
         type: 'GET',
         url: `https://api.spotify.com/v1/artists/${artistID}/albums?limit=10`,
@@ -169,7 +173,7 @@ $(document).ready(function() {
            'Authorization': 'Bearer ' + accessToken
         },
         dataType : 'json',
-        success: function(response){
+        success: (response) => {
           console.log(response)
 
           $("#spotify-loader").hide()
@@ -181,7 +185,7 @@ $(document).ready(function() {
           }
           else if (response.error) toastr["error"](response.error, "An Error Occurred")
         },
-        error : function(response) {
+        error : (response) => {
           console.log(response)
         }
       })
@@ -200,38 +204,54 @@ $(document).ready(function() {
     let btn = $(this)
     btn.addClass('red-btn')
 
-    setTimeout(function() {
+    setTimeout(() => {
       btn.removeClass('red-btn')
     }, 1000)
   })
 
-  $("#message").on('change keyup paste', function() {
+  $("#message").on('change keyup paste', () => {
     let width = Math.ceil(Math.random() * (10 - 1) + 1)
 
     $("#contact-name-container").attr('class', `col-md-${width} form-group`)
     $("#contact-email-container").attr('class', `col-md-${12 - width} form-group`)
   })
 
-  $("#name").focus(function() {
+  $("#name").focus(() => {
     $("#submit-btn-container").addClass("text-right")
   })
 
-  $("#email").dblclick(function() {
+  $("#email").dblclick(() => {
     $("#submit-btn-container").removeClass("text-right")
   })
 
-  $("#submit-btn").click(function() {
-    $("#message").slideUp(function() {
-      $("#email").slideUp(function() {
-        $("#name").slideUp(function() {
+  $("#submit-btn").click(() => {
+    $("#message").slideUp(() => {
+      $("#email").slideUp(() => {
+        $("#name").slideUp(() => {
           $("#contact-section").slideUp()
         })
       })
     })
   })
 
-  $(".nav li a[href='javascript:void(0)']").click(function() {
+  $(".nav li a[href='javascript:void(0)']").click(() => {
     new Audio('sounds/ding.mp3').play()
+  })
+
+  $("[role='navigation']").dblclick(() => {
+    let movements = {
+      '0' : () => $("#home-nav").insertAfter($("#about-nav")).hide().show('slow'),
+      '1' : () => $("#home-nav").insertAfter($("#blog-nav")).hide().show('slow'),
+      '2' : () => $("#home-nav").insertAfter($("#services-nav")).hide().show('slow'),
+      '3' : () => $("#home-nav").insertAfter($("#contact-nav")).hide().show('slow'),
+      '4' : () => $("#home-nav").insertBefore($("#about-nav")).hide().show('slow')
+    }
+
+    $.each($("ul.nav").children(), (index, navItem) => { // Must use children to avoid using the li within the nested ul
+      setTimeout(() => {
+        movements[index]()
+      }, index * 1000)
+    })
   })
 
 })
