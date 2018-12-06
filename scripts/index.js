@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-  toastr.options = {
+  toastr.options = {    // Set the settings / options for toaster messages
     "closeButton": false,
     "debug": false,
     "newestOnTop": false,
@@ -17,6 +17,141 @@ $(document).ready(function() {
     "showMethod": "fadeIn",
     "hideMethod": "fadeOut"
   }
+
+  $("#spotify-btn").click(function() {
+    $(this).prop('disabled', true)
+    SearchSpotify($(this), $('#spotify-search-type').val())
+  })
+
+  $(document).on('click', '.view-artist-albums', function() {   // Use on('click') because button is added dynamically
+    GetArtistAlbums($(this).attr('artist-id'))
+  })
+
+  $(".main-title").mouseleave(function() { // Rotate main title of the page 360 degrees on every hover - Can give a spinning effect
+    $(this).data('rotated', parseInt($(this).data('rotated') || 0) + 360).css({
+      transform: `rotate(${parseInt($(this).data('rotated')) + 360}deg)`
+    })
+  })
+
+  $("#learn-more-btn").click(function() {
+    let btn = $(this)
+    btn.addClass('red-btn')
+
+    setTimeout(() => {
+      btn.removeClass('red-btn')
+    }, 1000)
+  })
+
+  $("#message").on('change keyup paste', () => {
+    let width = Math.ceil(Math.random() * (10 - 1) + 1)
+
+    $("#contact-name-container").attr('class', `col-md-${width} form-group`)
+    $("#contact-email-container").attr('class', `col-md-${12 - width} form-group`)
+  })
+
+  $("#name").focus(() => {
+    $("#submit-btn-container").addClass("text-right")
+  })
+
+  $("#email").dblclick(() => {
+    $("#submit-btn-container").removeClass("text-right")
+  })
+
+  $("#submit-btn").click(() => {
+    $("#message").slideUp(() => {
+      $("#email").slideUp(() => {
+        $("#name").slideUp(() => {
+          $("#contact-section").slideUp()
+        })
+      })
+    })
+  })
+
+  $(".nav li a[href='javascript:void(0)']").click(() => {
+    new Audio('sounds/ding.mp3').play()
+  })
+
+  $("[role='navigation']").dblclick(() => {
+    let movements = {
+      '0' : () => $("#home-nav").insertAfter($("#about-nav")).hide().show('slow'),
+      '1' : () => $("#home-nav").insertAfter($("#blog-nav")).hide().show('slow'),
+      '2' : () => $("#home-nav").insertAfter($("#services-nav")).hide().show('slow'),
+      '3' : () => $("#home-nav").insertAfter($("#contact-nav")).hide().show('slow'),
+      '4' : () => $("#home-nav").insertBefore($("#about-nav")).hide().show('slow')
+    }
+
+    $.each($("ul.nav > li"), (index, navItem) => { // Must use children to avoid using the li within the nested ul
+      setTimeout(() => {
+        movements[index]()
+      }, index * 1000)
+    })
+  })
+
+  $(".read-more").click(function() {
+    let btn = $(this)
+    let container = btn.parent().parent()
+
+    container.toggleClass('col-md-4 col-md-12')
+
+    btn.text(btn.text().toLowerCase() === 'read more' ? 'Read less' : 'Read more')
+
+    setTimeout(() => {
+      $('html, body').animate({
+        scrollTop: $(container).offset().top - 20
+      }, 'slow')
+    }, 400)
+  })
+
+  $("#contact-nav").click(() => {
+    $('html, body').animate({
+      scrollTop: $("#contact-section").offset().top
+    }, 'slow')
+  })
+
+  $(".section.hero h3").mouseover(function() {
+    $(this).effect("shake", {
+      direction: "up",
+      times: 5,
+      distance: 8
+    }, 2000)
+  })
+
+  $(document).keypress((event) => {
+    if ($("input").is(':focus') || $("textarea").is(':focus')) return   // Don't continue if typing into input or textarea
+    $("#message").val($("#message").val() + event.key)
+
+    toastr["info"]("You pressed a key on the keyboard. It has been appended to the message textbox.", "Key Pressed")
+  })
+
+  $(window).scroll(function(){
+    let height = $(document).height() - $(window).height()
+    var scrollPercent = Math.ceil((100 / height) * $(document).scrollTop())
+
+    $(".progress-bar").css({ width: scrollPercent + '%' })
+  })
+
+  $(".service-block").mouseover(function() {
+    $(".service-block").not($(this)).addClass('blur')
+  }).mouseleave(() => {
+    $(".service-block").removeClass('blur')
+  })
+
+  $(".entry-media > a").click(function() {
+    let classes = ['greyscale', 'sepia', 'blur', 'invert', 'contrast']
+
+    $(this).removeClass().addClass(classes[Math.floor(Math.random() * 5)])
+  })
+
+  $(".section:first-of-type").click(function() {
+    const randomPadding = Math.ceil(Math.random() * (200 - 100) + 100)
+
+    $(this).css({ 'padding-top': randomPadding, 'padding-bottom': randomPadding })
+  })
+
+  $(".service-block:eq(2) > h3").click(function() {
+    $(this).toggleClass('invert-text')
+  })
+
 
   function GetSpotifyAccessToken(callback) {
     $.ajax({
@@ -38,11 +173,6 @@ $(document).ready(function() {
       }
     });
   }
-
-  $("#spotify-btn").click(function() {
-    $(this).prop('disabled', true)
-    SearchSpotify($(this), $('#spotify-search-type').val())
-  })
 
   function SearchSpotify(btn, type) {
     let searchText = $("#spotify-search").val()
@@ -157,13 +287,9 @@ $(document).ready(function() {
     ).hide().fadeIn()
   }
 
-  $(document).on('click', '.view-artist-albums', function() {
-    GetArtistAlbums($(this).attr('artist-id'))
-  })
-
   function GetArtistAlbums(artistID) {
-    $("#spotify-results").empty();
-    $("#spotify-loader").show();
+    $("#spotify-results").empty()
+    $("#spotify-loader").show()
 
     GetSpotifyAccessToken((accessToken) => {
       $.ajax({
@@ -191,67 +317,5 @@ $(document).ready(function() {
       })
     })
   }
-
-  /* ------------------- General Requirements --------------------- */
-
-  $(".main-title").mouseleave(function() { // Rotate main title of the page 360 degrees on every hover - Can give a spinning effect
-    $(this).data('rotated', parseInt($(this).data('rotated') || 0) + 360).css({
-      transform: `rotate(${parseInt($(this).data('rotated')) + 360}deg)`
-    })
-  })
-
-  $("#learn-more-btn").click(function() {
-    let btn = $(this)
-    btn.addClass('red-btn')
-
-    setTimeout(() => {
-      btn.removeClass('red-btn')
-    }, 1000)
-  })
-
-  $("#message").on('change keyup paste', () => {
-    let width = Math.ceil(Math.random() * (10 - 1) + 1)
-
-    $("#contact-name-container").attr('class', `col-md-${width} form-group`)
-    $("#contact-email-container").attr('class', `col-md-${12 - width} form-group`)
-  })
-
-  $("#name").focus(() => {
-    $("#submit-btn-container").addClass("text-right")
-  })
-
-  $("#email").dblclick(() => {
-    $("#submit-btn-container").removeClass("text-right")
-  })
-
-  $("#submit-btn").click(() => {
-    $("#message").slideUp(() => {
-      $("#email").slideUp(() => {
-        $("#name").slideUp(() => {
-          $("#contact-section").slideUp()
-        })
-      })
-    })
-  })
-
-  $(".nav li a[href='javascript:void(0)']").click(() => {
-    new Audio('sounds/ding.mp3').play()
-  })
-
-  $("[role='navigation']").dblclick(() => {
-    let movements = {
-      '0' : () => $("#home-nav").insertAfter($("#about-nav")).hide().show('slow'),
-      '1' : () => $("#home-nav").insertAfter($("#blog-nav")).hide().show('slow'),
-      '2' : () => $("#home-nav").insertAfter($("#services-nav")).hide().show('slow'),
-      '3' : () => $("#home-nav").insertAfter($("#contact-nav")).hide().show('slow'),
-      '4' : () => $("#home-nav").insertBefore($("#about-nav")).hide().show('slow')
-    }
-
-    $.each($("ul.nav").children(), (index, navItem) => { // Must use children to avoid using the li within the nested ul
-      setTimeout(() => {
-        movements[index]()
-      }, index * 1000)
-    })
-  })
 
 })

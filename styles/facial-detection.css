@@ -1,6 +1,10 @@
 #preview-img {
   border: 1px solid #AAA;
   margin-bottom: 20px;
+  max-width: 80vw;
+  width: auto;
+  max-height: 80vh;
+  object-fit: contain;
 }
 
 #preview-container {

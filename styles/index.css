@@ -77,3 +77,57 @@
 .form-group {
   transition: 0.4s;
 }
+
+.post-container {
+  -webkit-transition: width 0.5s ease, margin 0.5s ease;
+  -moz-transition: width 0.5s ease, margin 0.5s ease;
+  -o-transition: width 0.5s ease, margin 0.5s ease;
+  transition: width 0.5s ease, margin 0.5s ease;
+}
+
+.progress {
+  height: 10px;
+  position: fixed;
+  bottom: -10px;
+  left: 10px;
+  width: calc(100% - 20px);
+}
+
+.service-block {
+  transition: 1s;
+}
+
+.blur {
+  filter: blur(2px);
+  opacity:0.5;
+}
+
+.greyscale {
+  filter: grayscale(100%);
+}
+
+.sepia {
+  filter: sepia(100%);
+}
+
+.contrast {
+  filter: contrast(100%);
+}
+
+.invert {
+  filter: invert(100%);
+}
+
+.section {
+  transition: 0.4s;
+}
+
+.service-block h3 {
+  transition: 0.4s;
+}
+
+.invert-text {
+  background-color: #555;
+  color: white;
+  border-radius: 4px;
+}
