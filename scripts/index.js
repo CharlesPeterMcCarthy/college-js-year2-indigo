@@ -196,8 +196,7 @@ $(document).ready(function() {
 
   /* ----------------------- jQuery Animation ----------------------------- */
 
-
-  $(".fa-rocket").click(function() {    // When any of the rocket icons in the "our services" section is clicked
+  $.fn.flyRocket = function() {
     $(this).css({ 'text-align': 'left' })
     $(this).animate({ // Move rocket to the bottom left and create a larger box
       'width': '200px',
@@ -254,6 +253,10 @@ $(document).ready(function() {
       'padding': 0,
       'height': '80px'
     }, 400)
+  }
+
+  $(".fa-rocket").click(function() {    // When any of the rocket icons in the "our services" section is clicked
+    $(this).flyRocket()
   })
 
 
@@ -343,13 +346,16 @@ $(document).ready(function() {
     })
 
     $("#spotify-results").hide().slideDown()
+    setTimeout(() => $(".artist-img").fadeIn(), 1000)
   }
 
   function DisplaySpotifyAlbums(albums) {
     $.each(albums, (index, album) => {
       $(CreateSpotifyAlbumItem(album)).appendTo("#spotify-results")   // Append Spotify album list item to results
     })
+
     $("#spotify-results").hide().slideDown()
+    setTimeout(() => $(".album-img").fadeIn(), 1000)
   }
 
   function CreateSpotifyArtistItem(artist) {
@@ -367,7 +373,7 @@ $(document).ready(function() {
             </div>
           </div>
           <div class='col-sm-4 text-right'>
-            <img src='${artist.images.length && artist.images[1].url || "images/noimage.gif"}' class='artist-img'>
+            <img src='${artist.images.length && artist.images[1].url || "images/noimage.gif"}' class='artist-img' hidden>
           </div>
         </div>
       </li>`
