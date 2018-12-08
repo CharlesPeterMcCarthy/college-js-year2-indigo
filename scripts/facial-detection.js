@@ -138,6 +138,9 @@ $(document).ready(function() {
         else imgPrev.attr('src', "")
       }
 
+      let allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i
+      if (!allowedExtensions.exec(file.name)) return toastr["error"]("You can only upload images in .jpg, .jpeg and .png formats.", "Invalid File")
+
       img.src = _URL.createObjectURL(file)
     }
   })
