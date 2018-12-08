@@ -115,7 +115,7 @@
   filter: invert(100%);
 }
 
-.section {
+.section:first-of-type {
   transition: 0.4s;
 }
 

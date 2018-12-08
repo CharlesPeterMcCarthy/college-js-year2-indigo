@@ -2,6 +2,7 @@ $(document).ready(function() {
 
   /* ----------------------- Setup ----------------------------- */
 
+
   $(() => {
     toastr.options = {    // Set the settings / options for toaster messages
       "closeButton": false,
@@ -22,7 +23,9 @@ $(document).ready(function() {
     }
   })
 
+
   /* ----------------------- jQuery Events and Methods ----------------------------- */
+
 
   $("#spotify-search-btn").click(function() {
     $(this).prop('disabled', true)
@@ -134,7 +137,7 @@ $(document).ready(function() {
 
   $(window).scroll(function() {   // Fires anytime the user scrolls
     let height = $(document).height() - $(window).height()
-    var scrollPercent = Math.ceil((100 / height) * $(document).scrollTop())   // Percentage over the screen the user has scrolled
+    let scrollPercent = Math.ceil((100 / height) * $(document).scrollTop())   // Percentage over the screen the user has scrolled
 
     $(".progress-bar").css({ width: scrollPercent + '%' })  // Update the progress bar
   })
@@ -164,40 +167,63 @@ $(document).ready(function() {
   $("#recent-posts-title").mouseover(() => {  // On mouseover, 'transform' 1-3 .entry-media divs by moving them up and to the left
     $(".entry-media:lt(" + Math.ceil(Math.random() * 3) + ")").css({ transform: 'translate(-20px,-20px)'})
   }).mouseleave(() => {
-    $(".entry-media").css({ transform: ''})
+    $(".entry-media").css({ transform: '' })
+  })
+
+  $("footer h3 + address").mouseover(function() { // Increase address font size and surround by box
+    $(this).animate({
+      'font-size': '24px',
+      'background-color': '#555',
+      'border-radius': '8px',
+      'padding': '10px'
+    })
+  }).mouseleave(function() {  // Return to normal
+    $(this).animate({
+      'font-size': '14px',
+      'background-color': '#2c3e50',
+      'border-radius': '0',
+      'padding': '0'
+    })
+  })
+
+  $(".navbar-brand-block").click(function() {
+    $(this).slideUp(1000, function() { // Slide up and hide text
+      $(".navbar-brand").css({ 'text-transform': 'uppercase' }) // Change to uppercase
+      $(this).slideDown(1000) // Slide down to reveal text
+    })
   })
 
 
   /* ----------------------- jQuery Animation ----------------------------- */
 
 
-  $(".fa-rocket").click(function() {
+  $(".fa-rocket").click(function() {    // When any of the rocket icons in the "our services" section is clicked
     $(this).css({ 'text-align': 'left' })
-    $(this).animate({
+    $(this).animate({ // Move rocket to the bottom left and create a larger box
       'width': '200px',
       'height': '200px',
       'padding-top': '185px',
       'border-radius': '4px',
       'line-height': 0,
       'background-color': '#94bcfc'
-    }, 1000).animate({
+    }, 1000).animate({  // Rocket launches and flies to the top right as the background (sky) gets darker
       'padding-top': '15px',
       'padding-left': '170px',
       'background-color': 'black',
       'border-bottom-left-radius': '100px'
     }, {
       duration: 3000,
-      specialEasing: {
+      specialEasing: {  // Starts flying at a slow speed, speeds up, then slows down towards the end
         'padding-left': "easeOutBounce"
       },
       complete: function() {
-        $(this).addClass('hidden-icon')
+        $(this).addClass('hidden-icon')   // Hide the rocket
       }
-    }).animate({
+    }).animate({  // Turn box into a large circle
       'border-bottom-right-radius': '100px',
       'border-top-left-radius': '100px',
       'border-top-right-radius': '100px'
-    }, 1000).animate({
+    }, 1000).animate({  // Return circle to original size and colour
       'width': '80px',
       'height': '80px',
       'border-radius': '40px',
@@ -207,20 +233,22 @@ $(document).ready(function() {
     }, {
       duration: 1500,
       complete: function() {
-        $(this).css({ 'text-align': 'center' }).removeClass('hidden-icon')
+        $(this).css({ 'text-align': 'center' }).removeClass('hidden-icon')  // Show rocket again
       }
-    }).animate({
+    }).animate({    // Green box that extends horizontally
       'background-color': '#00d137',
       'border-radius': '4px',
       'width': '200px'
-    }, 400).animate({
+    }, 400).animate({ // Returns to normal
       'background-color': 'white',
+      'border-radius': '40px',
       'width': '80px'
-    }, 400).animate({
+    }, 400).animate({ // Green box that extends vertically
       'background-color': '#00d137',
+      'border-radius': '4px',
       'padding-top': '65px',
       'height': '200px'
-    }, 400).animate({
+    }, 400).animate({ // Return to normal
       'background-color': 'white',
       'border-radius': '40px',
       'padding': 0,
@@ -228,7 +256,9 @@ $(document).ready(function() {
     }, 400)
   })
 
+
   /* ----------------------- AJAX / API ----------------------------- */
+
 
   function GetSpotifyAccessToken(callback) {
     /*
