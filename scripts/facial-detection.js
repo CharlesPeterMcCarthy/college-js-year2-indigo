@@ -4,8 +4,8 @@ $(document).ready(function() {
 
   var _URL = window.URL || window.webkitURL
 
-  $(function() {
-    toastr.options = {
+  $(() => {
+    toastr.options = {    // Set the settings / options for toaster messages
       "closeButton": false,
       "debug": false,
       "newestOnTop": false,
@@ -27,7 +27,7 @@ $(document).ready(function() {
       selector: '.face-box.new',
       trigger: 'left',
       callback: function(key, options) {
-        let faceBox = $(options.$trigger.context)
+        let faceBox = $(options.$trigger.context)   // Get the current face-box element
 
         if (key === "add") {
           let name = prompt("Enter the person's name", "")
@@ -36,12 +36,12 @@ $(document).ready(function() {
           faceBox.attr('personName', name)
           faceBox.addClass('added').removeClass('new selected').attr('face-box-name', faceBox.attr('personName'))
         }
-        if (key === "delete") faceBox.remove()
+        if (key === "delete") faceBox.fadeOut(500, function() { $(this).remove() })
       },
       items: {
         "add": {name: "Add", icon: "add"},
         "delete": {name: "Delete", icon: "delete"},
-        "sep1": "---------",
+        "separator": "---------",
         "quit": {name: "Quit", icon: "quit"}
       }, events: {
         show: function(options) {
@@ -70,7 +70,7 @@ $(document).ready(function() {
         "edit": {name: "Edit", icon: "edit"},
         "remove": {name: "Remove", icon: "quit"},
         "delete": {name: "Delete", icon: "delete"},
-        "sep1": "---------",
+        "separator": "---------",
         "quit": {name: "Quit", icon: "quit"}
       }
     })
