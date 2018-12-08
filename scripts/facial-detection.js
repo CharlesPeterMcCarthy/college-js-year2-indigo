@@ -3,6 +3,8 @@ $(document).ready(function() {
   /* ---------------------- Set Up -------------------------- */
 
   let _URL = window.URL || window.webkitURL
+  let curImgWidth
+  let curImgBoxWidth
 
   $(() => {
     toastr.options = {    // Set the settings / options for toaster messages
@@ -76,24 +78,32 @@ $(document).ready(function() {
 
 
   $("#get-faces-btn").click(() => {
+    $("#get-faces-btn").html('Getting Faces..').prop('disabled', true)
+
     $("#preview-img").faceDetection({   // Use plugin to detect faces in image
       complete: (faces) => {    // When finished, get face data
-        setTimeout(() => {
-          $.each(faces, (index, face) => {
-            let faceBox = $("<div class='face-box new'></div>")
-              // Draw box around each face
-            faceBox.css({ top: face.y - 5, left: face.x - 5, width: face.width + 10, height: face.height + 10, 'border-radius': 8 })
+        let ratio = 1
+        if (curImgWidth / curImgBoxWidth > 1) ratio = curImgWidth / curImgBoxWidth
 
-            $("#preview-container").append(faceBox)
+        $.each(faces, (index, face) => {
+          let faceBox = $("<div class='face-box new'></div>")
+          // Draw box around each face
+          faceBox.css({   // Create face box relative to the person's face size
+            top: (face.y / ratio) - 5,
+            left: (face.x / ratio) - 5,
+            width: (face.width / ratio) + 10,
+            height: (face.height / ratio) + ((face.height / ratio) * 0.2),  // Add extra 20% height because plugin tends to cut off chin / mouth
+            'border-radius': 8
           })
 
-          $("#preview-img").loading('stop') // Hide loading screen
-          $("#get-faces-btn").prop('disabled', true)
-        }, 1000)
+          $("#preview-container").append(faceBox)
+        })
+
+        $("#get-faces-btn").fadeOut()
       }, error: (code, message) => {
         toastr["error"](message, "Error")
       }
-    }).loading('start')
+    })
   })
 
   $("#img-file").change(() => { // Image has been selected
@@ -107,15 +117,20 @@ $(document).ready(function() {
       img.onload = () => {    // When image starts loading
         let imgPrev = $('#preview-img')
 
-        imgPrev.css({ width: img.width, height: img.height }).fadeIn().loading('start')   // Set the size of the empty image and show loading screen
+        imgPrev.css({ width: img.width, height: img.height }).fadeIn().loading({ message: 'Uploading Image...' })   // Set the size of the empty image and show loading screen
 
         let file = $('#img-file').prop('files')[0]  // Get image uploaded
         let reader = new FileReader()
 
         reader.onloadend = () => {  // When image has been loaded
           setTimeout(() => {
-            imgPrev.attr('src', reader.result).loading('stop').hide().fadeIn('slow')  // Remove loading screen and show image
-            $("#get-faces-btn").prop('disabled', false).fadeIn()
+            // Remove loading screen and show image
+            imgPrev.attr('src', reader.result).css({ width: 'auto', height: 'auto' }).loading('stop').hide().fadeIn('slow', function() {
+              $("#get-faces-btn").prop('disabled', false).html('Get Faces').fadeIn()
+
+              curImgWidth = img.width
+              curImgBoxWidth = imgPrev[0].width
+            })
           }, 1000)
         }
 

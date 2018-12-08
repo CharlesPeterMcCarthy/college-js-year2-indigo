@@ -2,9 +2,10 @@
   border: 1px solid #AAA;
   margin-bottom: 20px;
   max-width: 80vw;
-  width: auto;
+//  width: auto;
+  height: auto;
   max-height: 80vh;
-  object-fit: contain;
+//  object-fit: contain;
 }
 
 #preview-container {
@@ -42,10 +43,10 @@
 	opacity: 1;
 }
 
-.face-box.added:before {
+.face-box.added:before {  /* STyle name tag text over facebox */
 	content: attr(face-box-name);
 	top: -15px;
-  left: -10px;
+  left: -15px;
   color: black;
   border-radius: 4px;
   background-color: white;
@@ -54,6 +55,6 @@
 	opacity: 0.7;
 	transform: rotate(-10deg);
 	display: inline-block;
-	transition: 0.4s;
+	font-weight: bold;
 	font-family: Arial;
 }
