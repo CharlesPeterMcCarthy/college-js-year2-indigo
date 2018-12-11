@@ -2,7 +2,7 @@ $(document).ready(function() {
 
   /* ---------------------- Set Up -------------------------- */
 
-  let _URL = window.URL || window.webkitURL
+  let _URL = window.URL || window.webkitURL   // Used for image upload
   let curImgWidth
   let curImgBoxWidth
 
@@ -21,8 +21,8 @@ $(document).ready(function() {
       "extendedTimeOut": "1000",
       "showEasing": "swing",
       "hideEasing": "linear",
-      "showMethod": "fadeIn",
-      "hideMethod": "fadeOut"
+      "showMethod": "slideDown",
+      "hideMethod": "slideUp"
     }
 
     $.contextMenu({
@@ -43,7 +43,7 @@ $(document).ready(function() {
         "add": {name: "Add", icon: "add"},
         "delete": {name: "Delete", icon: "delete"},
         "separator": "---------",
-        "quit": {name: "Quit", icon: "quit"}
+        "cancel": {name: "Cancel", icon: "quit"}
       }, events: {
         show: (options) => $(options.$trigger.context).addClass('selected'),   // Highlight orange
         hide: (options) => $(options.$trigger.context).removeClass('selected') // Remove orange highlight
@@ -53,7 +53,7 @@ $(document).ready(function() {
     $.contextMenu({
       selector: '.face-box.added',    // Attach to element (when name has been added already)
       trigger: 'left',
-      callback: function(key, options) {
+      callback: (key, options) => {
         let faceBox = $(options.$trigger.context)
 
         if (key === "edit") {
@@ -68,7 +68,7 @@ $(document).ready(function() {
         "remove": {name: "Remove Tag", icon: "quit"},
         "delete": {name: "Delete", icon: "delete"},
         "separator": "---------",
-        "quit": {name: "Quit", icon: "quit"}
+        "cancel": {name: "Cancel", icon: "quit"}
       }
     })
   })
@@ -89,10 +89,10 @@ $(document).ready(function() {
           let faceBox = $("<div class='face-box new'></div>")
           // Draw box around each face
           faceBox.css({   // Create face box relative to the person's face size
-            top: (face.y / ratio) - 5,
-            left: (face.x / ratio) - 5,
-            width: (face.width / ratio) + 10,
-            height: (face.height / ratio) + ((face.height / ratio) * 0.2),  // Add extra 20% height because plugin tends to cut off chin / mouth
+            'top': (face.y / ratio) - 5,
+            'left': (face.x / ratio) - 5,
+            'width': (face.width / ratio) + 10,
+            'height': (face.height / ratio) + ((face.height / ratio) * 0.2),  // Add extra 20% height because plugin tends to cut off chin / mouth
             'border-radius': 8
           })
 
@@ -112,6 +112,9 @@ $(document).ready(function() {
     let file, img
 
     if ((file = $("#img-file").prop('files')[0])) {
+      let allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i
+      if (!allowedExtensions.exec(file.name)) return toastr["error"]("You can only upload images in .jpg, .jpeg and .png formats.", "Invalid File")
+
       img = new Image()
 
       img.onload = () => {    // When image starts loading
@@ -137,9 +140,6 @@ $(document).ready(function() {
         if (file) reader.readAsDataURL(file)
         else imgPrev.attr('src', "")
       }
-
-      let allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i
-      if (!allowedExtensions.exec(file.name)) return toastr["error"]("You can only upload images in .jpg, .jpeg and .png formats.", "Invalid File")
 
       img.src = _URL.createObjectURL(file)
     }

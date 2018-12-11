@@ -18,9 +18,11 @@ $(document).ready(function() {
       "extendedTimeOut": "1000",
       "showEasing": "swing",
       "hideEasing": "linear",
-      "showMethod": "fadeIn",
-      "hideMethod": "fadeOut"
+      "showMethod": "slideDown",
+      "hideMethod": "slideUp"
     }
+
+    UpdateScrollbar() // Set scrollbar width on page load
   })
 
 
@@ -28,8 +30,11 @@ $(document).ready(function() {
 
 
   $("#spotify-search-btn").click(function() {
-    $(this).prop('disabled', true)
-    SearchSpotify($(this), $('#spotify-search-type').val())
+    SearchSpotify()
+  })
+
+  $(document).keypress(function(e) {
+    if ((e.keyCode || e.which) == 13) SearchSpotify()
   })
 
   $(document).on('click', '.view-artist-albums', function() {   // Use on('click') because button is added dynamically
@@ -46,9 +51,7 @@ $(document).ready(function() {
     let btn = $(this)
     btn.addClass('red-btn')
 
-    setTimeout(() => {  // Remove class after 1 second
-      btn.removeClass('red-btn')
-    }, 1000)
+    setTimeout(() => btn.removeClass('red-btn'), 1000)   // Remove class after 1 second
   })
 
   $("#message").on('change keyup paste', () => {
@@ -92,15 +95,13 @@ $(document).ready(function() {
 
       // Swap the navigation links with the home-nav link until it returns to the normal order
     $.each($("ul.nav > li"), (index, navItem) => { // Must use '>' symbol (children) to avoid using the li within the nested ul
-      setTimeout(() => {
-        movements[index]()
-      }, index * 1000)
+      setTimeout(() => movements[index](), index * 1000)
     })
   })
 
   $(".read-more").click(function() {
     let btn = $(this)
-    let container = btn.parent().parent()
+    let container = btn.parent().parent() // Get the outer div (2 levels above)
 
     container.toggleClass('col-md-4 col-md-12') // Alternate between the two classes on every click
 
@@ -136,10 +137,7 @@ $(document).ready(function() {
   })
 
   $(window).scroll(function() {   // Fires anytime the user scrolls
-    let height = $(document).height() - $(window).height()
-    let scrollPercent = Math.ceil((100 / height) * $(document).scrollTop())   // Percentage over the screen the user has scrolled
-
-    $(".progress-bar").css({ width: scrollPercent + '%' })  // Update the progress bar
+    UpdateScrollbar()
   })
 
   $(".service-block").mouseover(function() {
@@ -260,8 +258,14 @@ $(document).ready(function() {
   })
 
 
-  /* ----------------------- AJAX / API ----------------------------- */
+  /* ----------------------- Named Functions & AJAX / API ----------------------------- */
 
+  function UpdateScrollbar() {
+    let height = $(document).height() - $(window).height()
+    let scrollPercent = Math.ceil((100 / height) * $(document).scrollTop())   // Percentage over the screen the user has scrolled
+
+    $(".progress-bar").css({ width: scrollPercent + '%' })  // Update the progress bar
+  }
 
   function GetSpotifyAccessToken(callback) {
     /*
@@ -298,12 +302,16 @@ $(document).ready(function() {
     })
   }
 
-  function SearchSpotify(btn, type) {
+  function SearchSpotify() {
+    let btn = $("#spotify-search-btn")
     let searchText = $("#spotify-search").val()
+    let type = $('#spotify-search-type').val()
+
     if (!searchText) {    // Do not search for empty value
-      btn.prop('disabled', false)   // Disable search button until data has been returned from the Spotify API
       return toastr["warning"]("You have not entered anything into the search input field", "No Search Term")
     }
+
+    btn.prop('disabled', true) // Disable search button until data has been returned from the Spotify API
 
     $("#spotify-results").empty()   // Reset the results displayed
     $("#spotify-loader").show()     // Show loading spinner
@@ -346,7 +354,7 @@ $(document).ready(function() {
     })
 
     $("#spotify-results").hide().slideDown()
-    setTimeout(() => $(".artist-img").fadeIn(), 1000)
+    setTimeout(() => $(".artist-img").fadeIn(), 500)
   }
 
   function DisplaySpotifyAlbums(albums) {
@@ -355,7 +363,7 @@ $(document).ready(function() {
     })
 
     $("#spotify-results").hide().slideDown()
-    setTimeout(() => $(".album-img").fadeIn(), 1000)
+    setTimeout(() => $(".album-img").fadeIn(), 500)
   }
 
   function CreateSpotifyArtistItem(artist) {
@@ -394,7 +402,7 @@ $(document).ready(function() {
             </div>
           </div>
           <div class='col-sm-4 text-right'>
-            <img src='${album.images.length && album.images[1].url || "images/noimage.gif"}' class='album-img'>
+            <img src='${album.images.length && album.images[1].url || "images/noimage.gif"}' class='album-img' hidden>
           </div>
         </div>
       </li>`

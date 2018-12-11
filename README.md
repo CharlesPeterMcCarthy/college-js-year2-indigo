@@ -2,7 +2,7 @@
 
 ### Requirements
 
-* **0-25 jQuery anonymous functions bound to events**
+* **20-25 jQuery anonymous functions bound to events**
 	* 23 anonymous functions on separate elements
 	* 3 of which have a chained function attached
 	* Total of 26 anonymous functions

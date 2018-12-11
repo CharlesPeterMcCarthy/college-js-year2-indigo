@@ -2,10 +2,8 @@
   border: 1px solid #AAA;
   margin-bottom: 20px;
   max-width: 80vw;
-//  width: auto;
   height: auto;
   max-height: 80vh;
-//  object-fit: contain;
 }
 
 #preview-container {
@@ -43,7 +41,7 @@
 	opacity: 1;
 }
 
-.face-box.added:before {  /* STyle name tag text over facebox */
+.face-box.added:before {  /* Style name tag text over facebox */
 	content: attr(face-box-name);
 	top: -15px;
   left: -15px;
